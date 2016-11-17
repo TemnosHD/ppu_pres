@@ -1,0 +1,95 @@
+\documentclass[11pt]{beamer}
+\usetheme{Boadilla}
+\usecolortheme{beaver}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{multicol}
+\title{Current state of GCC support for PPU}
+%\setbeamercovered{transparent} 
+\setbeamertemplate{navigation symbols}{} 
+\author{Arthur Heimbrecht}
+%\logo{} 
+%\institute{} 
+\date{\today} 
+%\subject{} 
+\begin{document}
+
+\defverbatim[colored]\lstI{
+\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+int main() {
+  // Define variables at the beginning
+  // of the block, as in C:
+  CStash intStash, stringStash;
+  int i;
+  char* cp;
+  ifstream in;
+  string line;
+[...]
+\end{lstlisting}
+}
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\tableofcontents
+\end{frame}
+
+\section{Basic compiler structure}
+\begin{frame}[fragile]{Basic compiler structure}{Test}
+\begin{columns}[t]
+	\begin{column}{0.45\textwidth}
+      \begin{block}{Probl}
+      \begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+		int main()					
+	\end{lstlisting}
+      \end{block}
+    \end{column}    
+    \begin{column}{0.45\textwidth}
+      \begin{block}{Problems are inevitable}
+        \begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+		int main()					
+	\end{lstlisting}
+      \end{block}
+    \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Compiler backend}
+	\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+		int main()					
+	\end{lstlisting}
+\end{frame}
+
+\section{PPU programming until now}
+\begin{frame}{PPU programming until now}
+
+\end{frame}
+
+\section{Why GCC?}
+\begin{frame}{GCC vs. LLVM}
+
+\end{frame}
+
+\section{Current state of PPU backend}
+\begin{frame}{Current state of PPU backend - First steps}
+
+\end{frame}
+
+\begin{frame}{Current state of PPU backend - Create built-in function}
+
+\end{frame}
+
+
+\begin{frame}{Conclusion}
+
+\end{frame}
+
+\end{document}

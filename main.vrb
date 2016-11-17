@@ -1,0 +1,4 @@
+\frametitle{Compiler backend}
+\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+int main()
+\end{lstlisting}
