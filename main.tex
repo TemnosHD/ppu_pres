@@ -136,12 +136,17 @@
 \section{Current state of PPU backend}
 \begin{frame}{Current state of PPU backend}{First steps}
 	\begin{itemize}
-		\item started with rs/600 back-end
-		\item added s2pp register type $\rightarrow$ overloaded float regs
+		\item start with rs/6000 back-end
+		\item add header files and command line option -ms2pp
+		\item add s2pp register type $\rightarrow$ overloaded float regs
 			\begin{itemize}
-				\item needed own vector type, masks...
+				\item needed own internal vector type, bit-masks,...
 				\item AltiVec as blueprint (is more complex)
+				\item a lot of trouble
 			\end{itemize}
+		\item basic insns
+		\item support vector type and built-ins
+		\item implement "helper functions"
 	\end{itemize}
 \end{frame}
 
