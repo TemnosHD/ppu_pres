@@ -16,7 +16,19 @@ fxvstore (&v3, 0);
     \begin{column}{0.3\textwidth}
       \begin{block}{new assembly code}
         \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-asm code
+60: mr        r31,r1
+64: fxvsplatb 12,r1
+68: li        r9,16
+6c: fxvstax   12,r31,r9
+70: fxvsplatb 12,r2
+74: li        r9,32
+78: fxvstax   12,r31,r9
+80: fxvlax    11,r31,r9
+84: li        r9,32
+88: fxvlax    12,r31,r9
+8c: fxvaddbm  12,11,12
+90: li        r9,48
+94: fxvstax   12,r31,r9
 \end{lstlisting}
       \end{block}
     \end{column}

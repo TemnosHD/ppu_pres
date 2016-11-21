@@ -74,7 +74,7 @@
 			\end{itemize}
 		\item PPU characteristics:
 			\begin{itemize}
-				\item POWER architecture
+				\item Power ISA
 				\item general and vector registers (32 each)
 				\item synram
 			\end{itemize}
@@ -111,14 +111,19 @@
     	\begin{column}{0.30\textwidth}
     		\begin{block}{machine instructions}
        			\begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-				uint32_t v1, v2, v3;
-				fxvsplatb (1,1);
-				fxvstore (&v1, 1);
-				fxvsplatb (2,2);
-				fxvstore (&v2, 2);
-				fxvadd 	(0,1,2);
-				fxvstore (&v3, 0);
-				\end{lstlisting}
+				24: mr        r31,r1
+				28: li        r9,257
+				2c: fxvsplath 1,r9
+				30: addi      r9,r31,8
+				34: fxvstax   1,0,r9
+				38: li        r9,514
+				3c: fxvsplath 2,r9
+				40: addi      r9,r31,12
+				44: fxvstax   2,0,r9
+				48: fxvaddbm  0,1,2
+				4c: addi      r9,r31,16
+				50: fxvstax   0,0,r9
+			\end{lstlisting}
       		\end{block}
 		\end{column}
 	\end{columns}
@@ -141,7 +146,7 @@
 		\item add s2pp register type $\rightarrow$ overloaded float regs
 			\begin{itemize}
 				\item needed own internal vector type, bit-masks,...
-				\item AltiVec as blueprint (is more complex)
+				\item AltiVec as blueprint
 				\item a lot of trouble
 			\end{itemize}
 		\item basic insns
@@ -192,7 +197,19 @@
     \begin{column}{0.3\textwidth}
       \begin{block}{old assembly code}
         \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-		asm code				
+		24: mr        r31,r1
+		28: li        r9,257
+		2c: fxvsplath 1,r9
+		30: addi      r9,r31,8
+		34: fxvstax   1,0,r9
+		38: li        r9,514
+		3c: fxvsplath 2,r9
+		40: addi      r9,r31,12
+		44: fxvstax   2,0,r9
+		48: fxvaddbm  0,1,2
+		4c: addi      r9,r31,16
+		50: fxvstax   0,0,r9
+
 	\end{lstlisting}
       \end{block}
     \end{column}
@@ -228,7 +245,19 @@
     \begin{column}{0.3\textwidth}
       \begin{block}{new assembly code}
         \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-		asm code				
+		60: mr        r31,r1
+		64: fxvsplatb 12,r1 
+		68: li        r9,16
+		6c: fxvstax   12,r31,r9
+		70: fxvsplatb 12,r2
+		74: li        r9,32
+		78: fxvstax   12,r31,r9
+		80: fxvlax    11,r31,r9
+		84: li        r9,32
+		88: fxvlax    12,r31,r9
+		8c: fxvaddbm  12,11,12
+		90: li        r9,48
+		94: fxvstax   12,r31,r9
 	\end{lstlisting}
       \end{block}
     \end{column}
@@ -248,7 +277,7 @@
 
 \begin{frame}{Conclusion}
 	\begin{itemize}
-		\item currently usable
+		\item partly usable
 		\item add remaining insns and built-ins
 		\item add more complex built-ins? (e.g. multipy and add, scalar multiplication...)
 		\item write manual
