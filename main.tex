@@ -28,15 +28,15 @@
 \tableofcontents
 \end{frame}
 
-\section{Basic compiler structure}
-\begin{frame}{Basic compiler structure}
+\section{Basic compiling structure}
+\begin{frame}{Basic compiling structure}{Basic compiler structure}
 	\begin{columns}
 		\begin{column}{0.25\textwidth}
       		\begin{block}{Front-end}
        			\begin{itemize}
        				\item recognizes language
-       				\item type checking
        				\item pre-processing
+       				\item type checking
        				\item genreates Immediate Representation
        			\end{itemize}
       		\end{block}
@@ -45,7 +45,8 @@
       		\begin{block}{Middle-end}
        			\begin{itemize}
        				\item general optimizations to IR
-       				\item "compiler magic"
+       				\item ``compiler magic''
+       				\item passes IR
        			\end{itemize}
       		\end{block}
     	\end{column}
@@ -55,28 +56,45 @@
        				\item target specific
        				\item further/final optimization
        				\item register allocation (spilling)
-       				\item memory handling
+       				\item generates assembly code
        			\end{itemize}
       		\end{block}
     	\end{column}
     \end{columns}
 \end{frame}
 
+\begin{frame}{Basic compiling structure}{Assembler and Linker}
+    \begin{block}{Assembler}
+       	\begin{itemize}
+		\item relative memory handling (notes)
+		\item resolving references
+		\item generates object files
+       	\end{itemize}
+    \end{block}
+    \begin{block}{Linker}
+	\begin{itemize}
+       		\item absolute memory handling
+       		\item links object files and references
+       		\item $\rightarrow$ machine instructions
+       	\end{itemize}
+    \end{block}
+\end{frame}
+
 \begin{frame}[fragile]{Compiler backend}
 	\begin{itemize}
 		\item target files: target.h, target.md, target.c
-		\item important "variables"
+		\item important ``variables''
 			\begin{itemize}
 				\item register\_types, \_numbers, \_names
 				\item wordsize
 				\item basic insns
-				\item constraints ("r", "m"...)
+				\item constraints ('r', 'm'...)
 			\end{itemize}
 		\item PPU characteristics:
 			\begin{itemize}
 				\item Power ISA
-				\item general and vector registers (32 each)
-				\item synram
+				\item 32 general registers (32-bit) and 32 vector registers (128-bit)
+				\item additional synram
 			\end{itemize}
  	\end{itemize}
 \end{frame}
@@ -98,20 +116,19 @@
     	\begin{column}{0.25\textwidth}
      		\begin{block}{code}
         		\begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-				uint32_t v1, v2, v3;
-				fxvsplatb (1,1);
-				fxvstore (&v1, 1);
-				fxvsplatb (2,2);
-				fxvstore (&v2, 2);
-				fxvadd 	(0,1,2);
-				fxvstore (&v3, 0);				
+				fxv_array_t v1, v2, v3;
+				fxv_splatb (1,1);
+				fxv_store (&v1, 1);
+				fxv_splatb (2,2);
+				fxv_store (&v2, 2);
+				fxv_add 	(0,1,2);
+				fxv_store (&v3, 0);				
 				\end{lstlisting}
       		\end{block}
     	\end{column}
     	\begin{column}{0.30\textwidth}
     		\begin{block}{machine instructions}
        			\begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-				24: mr        r31,r1
 				28: li        r9,257
 				2c: fxvsplath 1,r9
 				30: addi      r9,r31,8
@@ -127,15 +144,6 @@
       		\end{block}
 		\end{column}
 	\end{columns}
-\end{frame}
-
-\section{Why GCC?}
-\begin{frame}{GCC vs. LLVM}
-	\begin{itemize}
-		\item GCC already working
-		\item better kown
-		\item small internal changes between versions $\rightarrow$ less maintenance
-	\end{itemize}
 \end{frame}
 
 \section{Current state of PPU backend}
@@ -181,23 +189,22 @@
 
 \begin{frame}[fragile]{Current state of PPU backend}{Code comparison}
 \begin{columns}[t]
-	\begin{column}{0.3\textwidth}
+   \begin{column}{0.3\textwidth}
       \begin{block}{old code}
       \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-		uint32_t v1, v2, v3;
-		fxvsplatb (1,1);
-		fxvstore (&v1, 1);
-		fxvsplatb (2,2);
-		fxvstore (&v2, 2);
-		fxvadd 	(0,1,2);
-		fxvstore (&v3, 0);
-		\end{lstlisting}
+		fxv_array_t v1, v2, v3;
+		fxv_splatb (1,1);
+		fxv_store (&v1, 1);
+		fxv_splatb (2,2);
+		fxv_store (&v2, 2);
+		fxv_add 	(0,1,2);
+		fxv_store (&v3, 0);				
+	\end{lstlisting}
       \end{block}
     \end{column}    
     \begin{column}{0.3\textwidth}
       \begin{block}{old assembly code}
         \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-		24: mr        r31,r1
 		28: li        r9,257
 		2c: fxvsplath 1,r9
 		30: addi      r9,r31,8
@@ -220,7 +227,7 @@
 		v1, v2, v3;
 		v1 = fxv_splat(1);
 		v2 = fxv_splat(2);	
-		v3 = fxv_add(v1. v2);			
+		v3 = fxv_add(v1, v2);			
 	\end{lstlisting}
       \end{block}
     \end{column}
@@ -232,20 +239,19 @@
 	\begin{column}{0.3\textwidth}
       \begin{block}{old code}
        \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-		uint32_t v1, v2, v3;
-		fxvsplatb (1,1);
-		fxvstore (&v1, 1);
-		fxvsplatb (2,2);
-		fxvstore (&v2, 2);
-		fxvadd 	(0,1,2);
-		fxvstore (&v3, 0);
-		\end{lstlisting}
+		fxv_array_t v1, v2, v3;
+		fxv_splatb (1,1);
+		fxv_store (&v1, 1);
+		fxv_splatb (2,2);
+		fxv_store (&v2, 2);
+		fxv_add 	(0,1,2);
+		fxv_store (&v3, 0);				
+	\end{lstlisting}
       \end{block}
     \end{column}    
     \begin{column}{0.3\textwidth}
       \begin{block}{new assembly code}
         \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-		60: mr        r31,r1
 		64: fxvsplatb 12,r1 
 		68: li        r9,16
 		6c: fxvstax   12,r31,r9

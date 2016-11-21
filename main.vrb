@@ -3,20 +3,19 @@
 \begin{column}{0.3\textwidth}
       \begin{block}{old code}
        \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-uint32_t v1, v2, v3;
-fxvsplatb (1,1);
-fxvstore (&v1, 1);
-fxvsplatb (2,2);
-fxvstore (&v2, 2);
-fxvadd  (0,1,2);
-fxvstore (&v3, 0);
+fxv_array_t v1, v2, v3;
+fxv_splatb (1,1);
+fxv_store (&v1, 1);
+fxv_splatb (2,2);
+fxv_store (&v2, 2);
+fxv_add  (0,1,2);
+fxv_store (&v3, 0);
 \end{lstlisting}
       \end{block}
     \end{column}
     \begin{column}{0.3\textwidth}
       \begin{block}{new assembly code}
         \begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-60: mr        r31,r1
 64: fxvsplatb 12,r1
 68: li        r9,16
 6c: fxvstax   12,r31,r9
