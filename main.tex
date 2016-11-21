@@ -9,16 +9,17 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{multicol}
+\usepackage[font=small,labelfont=bf]{caption}
 \title{Current state of GCC support for PPU}
 %\setbeamercovered{transparent} 
 \setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{caption}[numbered]
 \author{Arthur Heimbrecht}
 %\logo{} 
 %\institute{} 
 \date{\today} 
 %\subject{} 
 \begin{document}
-
 
 \begin{frame}
 \titlepage
@@ -80,7 +81,7 @@
     \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Compiler backend}
+\begin{frame}[fragile]{Compiler backend}{Key points}
 	\begin{itemize}
 		\item target files: target.h, target.md, target.c
 		\item important ``variables''
@@ -99,6 +100,13 @@
  	\end{itemize}
 \end{frame}
 
+\begin{frame}
+	\begin{figure}
+		\includegraphics[scale=0.8]{Fig11.png} 
+		\caption{Schematic PPU structure, Friedmann et al. "Demonstrating Hybrid Learning in a Flexible Neuromorphic Hardware System", p.7 fig.10, Universität Heidelberg, 2016} \label{fig:PPU}
+	\end{figure}
+\end{frame}
+
 \section{PPU programming until now}
 \begin{frame}[fragile]{PPU programming until now}
 	\begin{columns}[t]
@@ -113,10 +121,10 @@
 				\item reaccuring code
 			\end{itemize}    
     	\end{column}    
-    	\begin{column}{0.25\textwidth}
+    	\begin{column}{0.27\textwidth}
      		\begin{block}{code}
         		\begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red}]
-				fxv_array_t v1, v2, v3;
+				fxv_array_t v1,v2,v3;
 				fxv_splatb (1,1);
 				fxv_store (&v1, 1);
 				fxv_splatb (2,2);
@@ -147,7 +155,7 @@
 \end{frame}
 
 \section{Current state of PPU backend}
-\begin{frame}{Current state of PPU backend}{First steps}
+\begin{frame}{Current state of PPU backend}
 	\begin{itemize}
 		\item start with rs/6000 back-end
 		\item add header files and command line option -ms2pp
